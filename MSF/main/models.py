@@ -48,8 +48,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     scores = models.IntegerField(default=0)
     victoryPoints = models.IntegerField(default=0)
     pool = models.IntegerField(default=0)
-    tiltyard = models.ForeignKey('Tiltyard', on_delete=models.CASCADE, related_name='+', null=True)
+    tiltyard = models.ForeignKey('Tiltyard', on_delete=models.PROTECT, related_name='+', null=True)
     stage = models.IntegerField(default=0)
+
+    FIGHTER = 1
+    DUNGEON_MASTER = 2
+    SECRETARY = 3
+    
+    ROLE_CHOICES = (
+        (FIGHTER, 'Боец'),
+        (DUNGEON_MASTER, 'Глава клуба'),
+        (SECRETARY, 'Секретарь'),
+    )
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, default=1)
+
 
     objects = UserManager()
 
@@ -99,4 +111,5 @@ class Tiltyard(models.Model):
     
     class Meta:
         verbose_name = 'Ристалище'
-        verbose_name_plural = 'Ристалище'
+        verbose_name_plural = 'Ристалища'
+   
