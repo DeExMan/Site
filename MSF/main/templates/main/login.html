@@ -1,0 +1,24 @@
+{% extends "layout/basic.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Вход{% endblock %}
+
+{% block menu-4 %}
+<a id="entry" class="nav-link active disabled" style="background: #3B414E;" href="{% url 'main:login' %}">Войти</a>
+{% endblock %}
+
+{% block content %}
+
+<div  class="card">
+    <div  class="card-body">
+        <h4  class="card-title">Вход</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Войти</button>
+            <a class="nav-link" href="{% url 'main:register' %}">Регистрация</a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

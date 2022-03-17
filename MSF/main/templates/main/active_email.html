@@ -1,0 +1,7 @@
+{% autoescape off %}
+
+Привет, {{ user.get_full_name }}!
+Пожалуйста, нажмите на ссылку, чтобы подтвердить регистрацию:
+http://{{ domain }}{% url 'main:activate' uidb64=uid token=token %}
+
+{% endautoescape %}

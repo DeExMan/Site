@@ -1,0 +1,51 @@
+{% extends "layout/basic.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Изменение личных данных{% endblock %}
+
+{% block content %}
+
+<div  class="card">
+    <div  class="card-body">
+        <h4  class="card-title">Измените данные профиля</h4>
+    
+        <form class="needs-validation" method="POST">
+            {% csrf_token %}
+            <!-- {{ form|crispy }} -->
+            {{ form.non_field_errors }}
+            <div class="form-group">
+                {{ form.first_name.errors }}
+                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                <input type="text" maxlength="30" class="form-control" name="first_name" id="{{ form.first_name.id_for_label }}" value="{{ user.first_name }}" required>
+                <!-- {{ form.first_name }} -->
+            </div>
+            <div class="form-group">
+                {{ form.last_name.errors }}
+                <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                <input type="text" maxlength="30" class="form-control" name="last_name" id="{{ form.last_name.id_for_label }}" value="{{ user.last_name }}" required>
+            </div>
+            <div class="form-group">
+                {{ form.patronymic.errors }}
+                <label for="{{ form.patronymic.id_for_label }}">{{ form.patronymic.label }}</label>
+                <input type="text" maxlength="30" class="form-control" name="patronymic" id="{{ form.patronymic.id_for_label }}" value="{{ user.patronymic }}" required>
+            </div>
+            <div class="form-group">
+                {{ form.club.errors }}
+                <label for="{{ form.club.id_for_label }}">{{ form.club.label }}</label>
+                <!-- <select class="form-control" name="club" id="{{ form.club.id_for_label }}" required>
+                    {% for club in form.club %}
+                    {% if club == user.club %}
+                    <option value="{{ club }}" selected></option>
+                    {% else %}
+                    <option value="{{ club }}"></option>
+                    {% endif %}
+                    {% endfor %}
+                </select> -->
+                {{ form.club }}
+            </div>
+            <button  type="submit"  class="btn btn-success">Изменить профиль</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

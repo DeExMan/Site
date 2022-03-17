@@ -1,0 +1,30 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}Клубы{% endblock %}
+
+{% block menu-2 %}
+<a class="nav-link active disabled" href="{% url 'main:clubs' %}">Рейтинг клубов</a>
+{% endblock %}
+
+{% block content %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название клуба</th>
+      <th>Количество бойцов</th>
+      <th>Рейтинг</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for t in table %}
+    <tr>
+      <td>{{ t.name }}</td>
+      <td>{{ t.fighters_counter }}</td>
+      <td>{{ t.rating }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

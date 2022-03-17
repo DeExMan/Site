@@ -1,0 +1,81 @@
+{% extends "layout/basic.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/index.css' %}">
+{% endblock %}
+
+{% block menu-1 %}
+<a class="nav-link active disabled" href="{% url 'main:index' %}" style="font-size: 18px;">Рейтинг</a>
+{% endblock %}
+
+{% block content %}
+
+<!-- {% if user.is_authenticated %}
+  <p>Привет, {{ user.get_full_name }}!</p>
+{% endif %} -->
+
+<div class="col-sm">
+  <h1>Рейтинг бойцов</h1>
+  <input id="search_fighters" onkeyup="tableSearch('search_fighters', 'fighters')" type="text" class="form-control" placeholder="Имя или клуб">
+  <table id="fighters" class="table table-borderless table-dark" data-sortable>
+    <thead>
+      <tr>
+        <th>ФИО</th>
+        <th>Клуб</th>
+        <th>Рейтинг</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for f in fighters %}
+      {% if not f.is_staff and f.is_active %}
+      <tr>
+        <td>{{ f.get_full_name }}</td>
+        <td>{{ f.club }}</td>
+        <td>{{ f.rating }}</td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="col-sm">
+  <h1>Рейтинг клубов</h1>
+  <input id="search_clubs" onkeyup="tableSearch('search_clubs', 'clubs')" type="text" class="form-control" placeholder="Название клуба">
+  <table id="clubs" class="table table-borderless table-dark" data-sortable>
+    <thead>
+      <tr>
+        <th>Название клуба</th>
+        <th>Количество бойцов</th>
+        <th>Рейтинг</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for c in clubs %}
+      <tr>
+        <td>{{ c.name }}</td>
+        <td>{{ c.fighters_counter }}</td>
+        <td>{{ c.rating }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>      
+</div>
+
+{% endblock %}
+
+{% block row_content %}
+
+<div class="row justify-content-center" style="padding: 1rem; margin-right: 0; margin-left: 0;">
+  <div class="col-sm" style="display: flex; justify-content: center;">
+    <a id="add_to_rating" class="nav-link" href="{% url 'main:register' %}">
+      <img src="{% static 'main/img/plus.svg' %}" width="32" height="32" class="d-inline-block align-top" alt="" loading="lazy">
+      <br>Добавиться в рейтинг
+    </a>
+  </div>
+</div>
+
+<script src="{% static 'sortable/js/sortable.min.js' %}"></script>
+<script src="{% static 'main/js/search.js' %}"></script>
+
+{% endblock %}
