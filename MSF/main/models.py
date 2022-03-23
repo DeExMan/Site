@@ -44,12 +44,25 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False, verbose_name='Доступ к сайту администратора')
     is_active = models.BooleanField(default=False, verbose_name='Активность учётной записи')
 
-    number = models.IntegerField(default=0)
-    scores = models.IntegerField(default=0)
-    victoryPoints = models.IntegerField(default=0)
-    pool = models.IntegerField(default=0)
-    tiltyard = models.ForeignKey('Tiltyard', on_delete=models.CASCADE, related_name='+', null=True)
-    stage = models.IntegerField(default=0)
+    # -------------------------------------------------------------------------------------
+    number = models.IntegerField(default=0, blank=True)
+    scores = models.IntegerField(default=0, blank=True)
+    victoryPoints = models.IntegerField(default=0, blank=True)
+    pool = models.IntegerField(default=0, blank=True)
+    tiltyard = models.ForeignKey('Tiltyard', on_delete=models.CASCADE, related_name='+', null=True, blank=True, )
+    stage = models.IntegerField(default=0, blank=True)
+
+    FIGHTER = 1
+    DM = 2
+    SECRETARITY = 3
+    
+    ROLE_CHOICES = (
+        (FIGHTER, 'Боец'),
+        (DM, 'Глава клуба'),
+        (SECRETARITY, 'Cекретарь'),
+    )
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=1)
+    # -------------------------------------------------------------------------------------
 
     objects = UserManager()
 
@@ -86,13 +99,24 @@ class Club(models.Model):
 
 
 class Tiltyard(models.Model):
+
+    PREPARATION = 'Подготовка'
+    GOES = 'Идет'
+    FINISHED = 'Оконченно'
+    
+    STATE_CHOICES = (
+        (PREPARATION, 'Подготовка'),
+        (GOES, 'Идет'),
+        (FINISHED, 'Оконченно'),
+    )
+
     name = models.CharField(max_length=50)
-    nomination = models.CharField(max_length=50)
-    age_category = models.CharField(max_length=50)
-    league = models.CharField(max_length=50)
-    state = models.CharField(max_length=10)
-    referee = models.OneToOneField("User", on_delete=models.CASCADE, related_name='+',)
-    stage = models.IntegerField(default=0)
+    nomination = models.CharField(max_length=50,  null=True, blank=True,)
+    age_category = models.CharField(max_length=50,  null=True, blank=True,)
+    league = models.CharField(max_length=50,  null=True, blank=True,)
+    state = models.CharField(choices=STATE_CHOICES, default=1, max_length=50,  null=True, blank=True,)
+    referee = models.OneToOneField("User", on_delete=models.CASCADE, related_name='+',  null=True, blank=True,)
+    stage = models.IntegerField(default=0,  null=True, blank=True,)
 
     def __str__(self):
         return self.name

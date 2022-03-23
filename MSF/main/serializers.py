@@ -19,9 +19,10 @@ class TiltyardSerializerPost(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'patronymic', 
+        fields = ['id', 'email', 'password', 
+        'first_name', 'last_name', 'patronymic', 
         'club', 'rating', 'number', 'scores', 'victoryPoints', 'pool', 'tiltyard', 
-        'stage',]
+        'stage', 'role']
         depth = 1
 
         extra_kwargs = {'password': {
