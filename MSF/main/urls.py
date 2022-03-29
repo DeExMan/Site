@@ -11,6 +11,7 @@ router.register('tiltyards', TiltyardViewSet, basename='tiltyards')
 router.register('users', UserViewSet)
 router.register('users/$/', UserViewSet)
 router.register('referees', RefereesViewSet)
+router.register("freeFighters", FreeFightersViewSet)
 
 
 app_name = 'main'

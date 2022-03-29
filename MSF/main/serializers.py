@@ -34,3 +34,12 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         Token.objects.create(user=user)
         return user
+
+
+class FighterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'patronymic', 
+        'club', 'rating', 'number', 'scores', 'victoryPoints', 'pool', 'tiltyard', 
+        'stage',]
+        depth = 1

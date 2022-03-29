@@ -121,6 +121,10 @@ class RefereesViewSet(viewsets.ModelViewSet):
     queryset = User.objects.filter(role = 3, tiltyard__isnull =True)
     serializer_class = UserSerializer
 
+class FreeFightersViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.filter(role = 1, tiltyard__isnull =True)
+    serializer_class = FighterSerializer
+
 
 
 class CustomObtainAuthToken(ObtainAuthToken):
