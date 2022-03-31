@@ -4,7 +4,7 @@ from .models import *
 
 
 class UsersAdmin(admin.ModelAdmin):
-    list_display = ('email', 'last_name', 'club', 'rating')
+    list_display = ('email', 'last_name', 'role', 'club', 'rating')
     list_display_links = ('last_name',)
     search_fields = ('last_name', 'club')
     list_filter = ('club',)
