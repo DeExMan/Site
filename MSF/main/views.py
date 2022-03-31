@@ -33,7 +33,42 @@ def clubs(request):
 
 
 def profile(request):
-    return render(request, 'main/profile.html')
+    if request.method == 'POST':
+        form = ChangeUserForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(pk=request.user.pk)
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.patronymic = form.cleaned_data.get('patronymic')
+            # new_club = form.cleaned_data.get('club')
+            # if new_club != user.club:
+            #     club = Club.objects.get(name=new_club)
+            #     club.fighters_counter += 1
+            #     club.save()
+            #     club = Club.objects.get(name=user.club)
+            #     club.fighters_counter -= 1
+            #     club.save()
+            # user.club = new_club
+            user.club = form.cleaned_data.get('club')
+            user.save()
+            return redirect('main:profile')
+        # else:
+        #     return HttpResponse("Invalid data")
+    else:
+        form = ChangeUserForm()
+        return render(request, 'main/profile.html', {'form': form})
+    # return render(request, 'main/profile.html')
+
+
+def add_club(request):
+    if request.method == 'POST':
+        form = AddClubForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('main:register')
+    else:
+        form = AddClubForm()
+        return render(request, 'main/add_club.html', {'form': form})
 
 
 def profile_change(request):

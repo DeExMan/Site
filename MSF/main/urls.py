@@ -22,6 +22,7 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('register/', register, name='register'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$', activate, name='activate'),
+    path('add-club/', add_club, name='add_club'),
     path('profile/', profile, name='profile'),
     path('profile-change/', profile_change, name='profile_change'),
     path('password-change/', views.PasswordChangeView.as_view(template_name = 'main/password_change.html', success_url=reverse_lazy('main:password_change_done')), name='password_change'),

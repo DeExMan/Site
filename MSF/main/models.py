@@ -7,7 +7,6 @@ import jwt
 from datetime import datetime, timedelta
 
 
-
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -42,18 +41,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, verbose_name='Имя')
     last_name = models.CharField(max_length=30, verbose_name='Фамилия')
     patronymic = models.CharField(max_length=30, blank=True, verbose_name='Отчество')
-    club = models.ForeignKey('Club', on_delete=models.PROTECT, null=True, verbose_name='Клуб')
+    club = models.ForeignKey('Club', on_delete=models.PROTECT, blank=True, null=True, verbose_name='Клуб')
     rating = models.FloatField(default=0, verbose_name='Рейтинг')
     is_staff = models.BooleanField(default=False, verbose_name='Доступ к сайту администратора')
     is_active = models.BooleanField(default=False, verbose_name='Активность учётной записи')
 
     # -------------------------------------------------------------------------------------
-    number = models.IntegerField(default=0, blank=True)
-    scores = models.IntegerField(default=0, blank=True)
-    victoryPoints = models.IntegerField(default=0, blank=True)
-    pool = models.IntegerField(default=0, blank=True)
-    tiltyard = models.ForeignKey('Tiltyard', on_delete=models.CASCADE, related_name='+', null=True, blank=True, )
-    stage = models.IntegerField(default=0, blank=True)
+    number = models.IntegerField(default=0, blank=True, verbose_name='Номер бойца')
+    scores = models.IntegerField(default=0, blank=True, verbose_name='Очки за бой')
+    victoryPoints = models.IntegerField(default=0, blank=True, verbose_name='Количество побед')
+    pool = models.IntegerField(default=0, blank=True, verbose_name='Пул')
+    tiltyard = models.ForeignKey('Tiltyard', on_delete=models.CASCADE, related_name='+', null=True, blank=True, verbose_name='Ристалище')
+    stage = models.IntegerField(default=0, blank=True, verbose_name='Стадия')
 
     FIGHTER = 1
     DM = 2
@@ -64,7 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         (DM, 'Глава клуба'),
         (SECRETARITY, 'Cекретарь'),
     )
-    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=1)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=1, verbose_name='Роль')
     # -------------------------------------------------------------------------------------
 
     objects = UserManager()
@@ -75,6 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+        ordering = ['last_name']
 
     def __str__(self):
         return self.email
@@ -90,7 +90,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Club(models.Model):
     name = models.CharField(max_length=80, db_index=True, verbose_name='Название клуба')
     fighters_counter = models.IntegerField(default=0, verbose_name='Количество бойцов')
-    rating = models.FloatField(verbose_name='Рейтинг')
+    rating = models.FloatField(default=0, verbose_name='Рейтинг')
 
     def __str__(self):
         return self.name

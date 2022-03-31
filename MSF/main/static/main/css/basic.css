@@ -31,7 +31,8 @@ nav ul li:last-child {
     float: right;
     margin-left: auto;
 }
-#entry {
+.entry {
+    display: block;
     background: #1DB970;
     color: white;
     box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.15);
@@ -44,12 +45,28 @@ nav ul li:last-child {
     padding: 0.5em 1em;
     margin: 0.5rem 1rem 0.5rem 0.5rem;
 }
-#entry:hover {
+.entry:hover {
+    text-decoration: none;
+    background: #489C75;
+    color: #3B414E;
+}
+.buttons {
+    display: inline-block;
+    background: #1DB970;
+    color: white;
+    box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid transparent;
+}
+.buttons:hover {
+    text-decoration: none;
     background: #489C75;
     color: #3B414E;
 }
 .form-control {
     display: flex;
+    color: #C2C2C2;
     background-color: #3B414E;
     box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
@@ -67,12 +84,23 @@ nav ul li:last-child {
     color: #3B414E;
 }
 .card, form {
-    background: #262E3E;
+    background: #323846;
     color: white;
+    border-radius: 10px;
 }
 select option {
     border-radius: 10px;
     border: 0;
     width: auto;
     max-height: 10px;
+}
+#profile {
+    box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.15);
+    margin-right: 1rem;
+}
+#profile:hover svg path[fill="#1DB970"] {
+    fill: #489C75;
+}
+#profile:hover svg path[fill="#323846"] {
+    fill: #262E3E;
 }

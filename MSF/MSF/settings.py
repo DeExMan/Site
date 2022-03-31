@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    "django_extensions",
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

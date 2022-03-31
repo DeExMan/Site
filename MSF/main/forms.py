@@ -8,11 +8,6 @@ from .models import *
 
 
 class RegisterUserForm(UserCreationForm):
-    # email = forms.EmailField(label='Адрес электронной почты', widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    # first_name = forms.CharField(label='Имя', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    # last_name = forms.CharField(label='Фамилия', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    # password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    # password2 = forms.CharField(label='Пароль (ещё раз)', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['club'].empty_label = "Клуб не выбран"
@@ -35,3 +30,12 @@ class ChangeUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'patronymic', 'club')
+
+
+class AddClubForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = Club
+        fields = (['name'])
