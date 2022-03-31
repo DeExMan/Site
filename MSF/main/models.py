@@ -57,11 +57,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     FIGHTER = 1
     DM = 2
     SECRETARITY = 3
+    REFEREE = 4
     
     ROLE_CHOICES = (
         (FIGHTER, 'Боец'),
         (DM, 'Глава клуба'),
         (SECRETARITY, 'Cекретарь'),
+        (REFEREE, 'Судья'),
     )
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=1, verbose_name='Роль')
     # -------------------------------------------------------------------------------------
