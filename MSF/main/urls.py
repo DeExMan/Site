@@ -12,6 +12,7 @@ router.register('users', UserViewSet)
 router.register('users/$/', UserViewSet)
 router.register('referees', RefereesViewSet)
 router.register("freeFighters", FreeFightersViewSet)
+router.register("battleOrder", BattleOrderViewSet)
 
 
 app_name = 'main'

@@ -105,9 +105,9 @@ class Club(models.Model):
 
 class Tiltyard(models.Model):
 
-    PREPARATION = 'Подготовка'
-    GOES = 'Идет'
-    FINISHED = 'Оконченно'
+    PREPARATION = "Подготовка"
+    GOES = "Идет"
+    FINISHED = "Оконченно"
     
     STATE_CHOICES = (
         (PREPARATION, 'Подготовка'),
@@ -119,7 +119,7 @@ class Tiltyard(models.Model):
     nomination = models.CharField(max_length=50,  null=True, blank=True,)
     age_category = models.CharField(max_length=50,  null=True, blank=True,)
     league = models.CharField(max_length=50,  null=True, blank=True,)
-    state = models.CharField(choices=STATE_CHOICES, default=1, max_length=50,  null=True, blank=True,)
+    state = models.CharField(choices=STATE_CHOICES, default=1, max_length=10,  null=True, blank=True,)
     referee = models.OneToOneField("User", on_delete=models.CASCADE, related_name='+',  null=True, blank=True,)
     stage = models.IntegerField(default=0,  null=True, blank=True,)
 
@@ -129,3 +129,18 @@ class Tiltyard(models.Model):
     class Meta:
         verbose_name = 'Ристалище'
         verbose_name_plural = 'Ристалище'
+
+
+class BattleOrder(models.Model):
+    left_fighter =  models.ForeignKey('User', on_delete=models.PROTECT, verbose_name='Левый боец',  related_name='Left')
+    right_fighter =  models.ForeignKey('User', on_delete=models.PROTECT, verbose_name='Правый боец',  related_name='Right')
+    Tiltyard =  models.ForeignKey('Tiltyard', on_delete=models.PROTECT, verbose_name='Ристалище')
+    Order = models.PositiveSmallIntegerField(verbose_name="Порядок")
+
+    def __str__(self):
+        return self.Tiltyard
+
+    class Meta:
+        verbose_name = 'Порядок боев'
+        verbose_name_plural = 'Порядки боев'
+        ordering = ['-Tiltyard']

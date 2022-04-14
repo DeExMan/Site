@@ -161,6 +161,11 @@ class FreeFightersViewSet(viewsets.ModelViewSet):
     serializer_class = FighterSerializer
 
 
+class BattleOrderViewSet(viewsets.ModelViewSet):
+    queryset = BattleOrder.objects.all()
+    serializer_class = BattleOrderSerializer
+
+
 
 class CustomObtainAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):

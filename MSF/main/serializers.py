@@ -43,3 +43,10 @@ class FighterSerializer(serializers.ModelSerializer):
         'club', 'rating', 'number', 'scores', 'victoryPoints', 'pool', 'tiltyard', 
         'stage',]
         depth = 1
+
+
+class BattleOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BattleOrder
+        fields = ['left_fighter','right_fighter', "Tiltyard", "Order" ]
+        depth = 1
