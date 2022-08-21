@@ -8,12 +8,13 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
+from .utils import Util
 
 from .forms import *
 from .models import *
 from .serializers import *
 
-from rest_framework import viewsets
+from rest_framework import viewsets, generics, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -150,10 +151,16 @@ class TiltyardViewSet(viewsets.ModelViewSet):
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+
+    def get_serializer_class(self):
+        method = self.request.method
+        if method == 'PUT':
+            return UserSerializerPut
+        else:
+            return UserSerializer
 
 class RefereesViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.filter(role = 3, tiltyard__isnull =True)
+    queryset = User.objects.filter(role = 4, tiltyard__isnull =True)
     serializer_class = UserSerializer
 
 class FreeFightersViewSet(viewsets.ModelViewSet):
@@ -163,8 +170,39 @@ class FreeFightersViewSet(viewsets.ModelViewSet):
 
 class BattleOrderViewSet(viewsets.ModelViewSet):
     queryset = BattleOrder.objects.all()
-    serializer_class = BattleOrderSerializer
+    
+    def get_serializer_class(self):
+        method = self.request.method
+        if method == 'POST':
+            return BattleOrderSerializerPost
+        elif method == 'PUT':
+            return BattleOrderSerializerPut
+        else:
+            return BattleOrderSerializer
 
+class UserPreRegistrationViewSet(generics.GenericAPIView):
+    serializers_class = RegisterSerializer
+    
+    def post(self, request):
+        user = request.data
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        user_data = serializer.data
+        user_password = serializer.data.password
+        user = User.objects.get(email=user_data['email'])
+
+        current_site = get_current_site(request).domain
+        absurl = 'http://'+current_site
+        email_body = 'Здраствуйте, ' + user.last_name + ' ' + \
+            user.firts_name + ' ' + user.patronymic + \
+            ', вы приняли участие в соревнованияъ ФСМБ. Вы были автоматически зарегестрированы на сайте: \n ' + \
+                absurl + 'Ваш пароль: ' + user_password +'\n Вам следует сменить его на сайте!'
+        data = {'email_body': email_body, 'to_email': user.email, 'email_subject': 'Ваш аккаунт ФСМБ'}
+         
+        Util.send_email(data)
+         
+        return Response(user_data, user_password, status=status.HTTP_201_CREATED)
 
 
 class CustomObtainAuthToken(ObtainAuthToken):

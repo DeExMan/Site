@@ -12,6 +12,10 @@ router.register('users', UserViewSet)
 router.register('users/$/', UserViewSet)
 router.register('referees', RefereesViewSet)
 router.register("freeFighters", FreeFightersViewSet)
+
+# Пример реализации маршрута
+# Создавая маршрут в через метод .register одним из аргументов
+# передается класс контроллера расположенный ниже
 router.register("battleOrder", BattleOrderViewSet)
 
 
@@ -30,4 +34,5 @@ urlpatterns = [
     path('password-change/done/', views.PasswordChangeDoneView.as_view(template_name = 'main/password_change_done.html'), name='password_change_done'),
     path('api/', include(router.urls)),
     url(r'^authenticate/', CustomObtainAuthToken.as_view()),
+    path('userPreRegistration/', UserPreRegistrationViewSet.as_view(), name="register")
 ]

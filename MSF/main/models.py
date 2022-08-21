@@ -48,11 +48,39 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # -------------------------------------------------------------------------------------
     number = models.IntegerField(default=0, blank=True, verbose_name='Номер бойца')
-    scores = models.IntegerField(default=0, blank=True, verbose_name='Очки за бой')
+    
     victoryPoints = models.IntegerField(default=0, blank=True, verbose_name='Количество побед')
     pool = models.IntegerField(default=0, blank=True, verbose_name='Пул')
     tiltyard = models.ForeignKey('Tiltyard', on_delete=models.CASCADE, related_name='+', null=True, blank=True, verbose_name='Ристалище')
     stage = models.IntegerField(default=0, blank=True, verbose_name='Стадия')
+
+    YOUNG_FIGHTER = 0
+    THIRD_YOUNG = 1
+    SECOND_YOUNG = 2
+    FIRST_YOUNG = 3
+    THIRD_ADULT = 4
+    SECOND_ADULT = 5
+    FIRST_ADULT = 6
+    KMS = 7
+    MC = 8
+    MCMK = 9
+    # ZMC = 10
+    
+    CATEGORY_CHOICES = (
+        (YOUNG_FIGHTER, 'Юный боец'),
+        (THIRD_YOUNG, '3 Юнешеский'),
+        (SECOND_YOUNG, '2 Юнешеский'),
+        (FIRST_YOUNG, '1 Юнешеский'),
+        (THIRD_ADULT, '3 Взрослый'),
+        (SECOND_ADULT, '2 Взрослый'),
+        (FIRST_ADULT, '1 Взрослый'),
+        (KMS, 'КМС'),
+        (MC, 'МС'),
+        (MCMK, 'МСМК'),
+        # (ZMC, 'ЗМС'),
+    )
+
+    category = models.IntegerField(choices=CATEGORY_CHOICES, blank=False, null=False, default=0, verbose_name='Категория')
 
     FIGHTER = 1
     DM = 2
@@ -121,7 +149,7 @@ class Tiltyard(models.Model):
     league = models.CharField(max_length=50,  null=True, blank=True,)
     state = models.CharField(choices=STATE_CHOICES, default=1, max_length=10,  null=True, blank=True,)
     referee = models.OneToOneField("User", on_delete=models.CASCADE, related_name='+',  null=True, blank=True,)
-    stage = models.IntegerField(default=0,  null=True, blank=True,)
+    stage = models.IntegerField(default=1,  null=True, blank=True, verbose_name="Этап")
 
     def __str__(self):
         return self.name
@@ -136,6 +164,9 @@ class BattleOrder(models.Model):
     right_fighter =  models.ForeignKey('User', on_delete=models.PROTECT, verbose_name='Правый боец',  related_name='Right')
     Tiltyard =  models.ForeignKey('Tiltyard', on_delete=models.PROTECT, verbose_name='Ристалище')
     Order = models.PositiveSmallIntegerField(verbose_name="Порядок")
+    stage = models.IntegerField(default=1,  null=True, blank=True, verbose_name="Этап")
+    left_scores = models.IntegerField(default=0, blank=True, verbose_name='Очки за бой левого бойца')
+    right_scores = models.IntegerField(default=0, blank=True, verbose_name='Очки за бой правого бойца')
 
     def __str__(self):
         return self.Tiltyard
